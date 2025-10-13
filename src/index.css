@@ -1,0 +1,413 @@
+/* =========================================================
+   IMPORTS (deben ir antes que todo)
+   ========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700&display=swap');
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+
+/* =========================================================
+   TOKENS / THEME
+   ========================================================= */
+:root{
+  /* Colores base */
+  --c-primary:#006C84;
+  --c-primary-700:#055768;
+  --c-primary-50:#F1FBFD;
+  --c-text:#2B2B2B;
+  --c-muted:#616A6E;
+  --c-line:#E8F0F2;
+
+  /* Navbar height estimada (ajusta si cambias tamaños) */
+  --nav-h: 72px;
+
+  /* Radios y elevación */
+  --radius:18px;
+  --radius-pill:999px;
+
+  /* Sombras unificadas */
+  --shadow-1: 0 1px 6px rgba(0,0,0,.06);   /* navbar/bordes sutiles */
+  --shadow-2: 0 6px 18px rgba(0,0,0,.06);  /* cards base */
+  --shadow-3: 0 14px 40px rgba(0,0,0,.08); /* vidrio hero / hover */
+}
+
+/* =========================================================
+   BASE
+   ========================================================= */
+html, body { height: 100%; }
+body{
+  font-family: 'Inter', system-ui, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--c-text);
+  scroll-behavior: smooth;
+}
+h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+
+/* Espacio bajo el navbar por defecto (todas las páginas) */
+main.container { padding-top: 6rem; }
+@media (max-width: 768px){
+  main.container { padding-top: 5rem; }
+}
+
+/* Accesibilidad: skip link */
+.visually-hidden-focusable:not(:focus):not(:focus-within){
+  position:absolute!important; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+}
+
+/* Enlaces del navbar de Bootstrap (si existieran) */
+.navbar .nav-link.active { text-decoration: underline; }
+
+/* =========================================================
+   NAVBAR ELEGANTE (glass + sticky)
+   ========================================================= */
+.nav-mdq{
+  position: sticky; top: 0; z-index: 1000;
+  background: rgba(255,255,255,.78);
+  backdrop-filter: saturate(160%) blur(10px);
+  box-shadow: var(--shadow-1);
+  border-bottom: 1px solid var(--c-line);
+}
+.nav-mdq__wrap{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:.75rem 0;
+}
+.nav-mdq__brand{ display:flex; align-items:center; gap:.6rem; text-decoration:none; }
+.nav-mdq__logo{
+  width:36px; height:36px; border-radius:12px; display:grid; place-items:center;
+  background: var(--c-primary); color:#fff;
+  font: 700 .95rem/1 Manrope, sans-serif;
+  box-shadow: var(--shadow-2);
+}
+.nav-mdq__brand span{ font:700 1rem/1 Manrope, sans-serif; color:#0B3942; letter-spacing:.2px; }
+
+/* Menú */
+.nav-mdq__menu{ display:flex; gap:.25rem; align-items:center; }
+.nav-mdq__link{
+  padding:.55rem .8rem; border-radius:12px; border:1px solid transparent;
+  color:inherit; text-decoration:none; font-weight:600;
+}
+.nav-mdq__link:hover{ background:var(--c-primary-50); border-color:var(--c-line); }
+.nav-mdq__link.active{ color:#0E3F49; background:var(--c-primary-50); border-color:var(--c-line); }
+
+/* Toggler (mobile) */
+.nav-mdq__toggler{
+  display:none; width:42px; height:42px; border-radius:12px;
+  border:1px solid var(--c-line); background:#fff; cursor:pointer;
+  align-items:center; justify-content:center; gap:4px;
+}
+.nav-mdq__bar{ display:block; width:20px; height:2px; background:#103E47; }
+
+/* Menú responsive */
+@media (max-width: 991px){
+  .nav-mdq__toggler{ display:inline-flex; }
+  .nav-mdq__menu{
+    position:absolute; top:100%; right:0; left:0;
+    display:grid; gap:.25rem;
+    background:#fff; border-bottom:1px solid var(--c-line);
+    box-shadow: var(--shadow-2);
+    padding:.5rem; transform: translateY(-8px);
+    opacity:0; pointer-events:none;
+    transition: opacity .18s ease, transform .18s ease;
+  }
+  .nav-mdq__menu.is-open{ transform: translateY(0); opacity:1; pointer-events:auto; }
+  .nav-mdq__link{ border-radius:12px; }
+}
+
+/* =========================================================
+   ANTI-GAP NAVBAR vs HERO (solo Home)
+   ========================================================= */
+/* Cuando el <body> tiene .has-hero (Home): */
+.has-hero .nav-mdq{
+  /* eliminamos línea/sombra para que no aparezca la franja */
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+.has-hero .nav-mdq + main{
+  /* main sin padding superior en Home */
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+.has-hero .hero-mdq{
+  /* el Hero sube bajo el navbar y compensa internamente */
+  margin-top: calc(-1 * var(--nav-h));
+  padding-top: var(--nav-h);
+}
+
+/* =========================================================
+   HERO (full-bleed + glass)
+   ========================================================= */
+.hero-mdq{
+  position: relative; isolation: isolate;
+  /* Full-bleed: sobresale del contenedor para ocupar 100vw */
+  margin-left:  calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  width: 100vw;
+
+  min-height: 62vh;
+  background: center/cover no-repeat;
+  overflow: hidden;
+
+  /* fallback por si no se aplica .has-hero (mantiene pegado) */
+  padding-top: 1px;
+  margin-top: -1px;
+}
+/* Velo superior sutil */
+.hero-mdq::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,.10) 35%, rgba(255,255,255,0) 100%);
+  pointer-events:none;
+}
+/* Centrado del vidrio */
+.hero-mdq > .container{
+  min-height:62vh; display:flex; align-items:center; justify-content:center;
+}
+/* Tarjeta de vidrio */
+.hero-mdq__inner{
+  position:relative; max-width:830px; margin:0 auto;
+  background:rgba(255,255,255,.65);
+  backdrop-filter: blur(12px) saturate(140%);
+  border:1px solid var(--c-line); border-radius:22px;
+  box-shadow: var(--shadow-3);
+  padding:1.4rem;
+}
+.hero-mdq__title{
+  color:#0E3F49; font-weight:700;
+  font-size:clamp(1.9rem,2.8vw,3rem);
+  line-height:1.12; margin:0 0 .7rem;
+}
+.hero-mdq__lead{ color:var(--c-muted); font-size:1.06rem; margin:0 0 1.1rem; }
+.hero-mdq__cta{ display:flex; gap:.65rem; flex-wrap:wrap; }
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+.btn-mdq{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:.85rem 1.1rem;
+  border-radius: var(--radius-pill);
+  border:1px solid transparent;
+  font-weight:600; letter-spacing:.2px;
+  text-decoration:none; cursor:pointer;
+  transition: transform .06s, background .15s, border-color .15s;
+}
+.btn-mdq:active{ transform: translateY(1px); }
+.btn-mdq--primary{ background:var(--c-primary); color:#fff; }
+.btn-mdq--primary:hover{ background:var(--c-primary-700); }
+.btn-mdq--soft{ background:var(--c-primary-50); color:#0B3A43; border-color:var(--c-line); }
+.btn-mdq--soft:hover{ background:#E7F6F9; }
+.btn-mdq--sm{ padding:.6rem .9rem; font-size:.95rem; }
+
+/* =========================================================
+   SECCIONES / CARDS
+   ========================================================= */
+.section-title-mdq{
+  font-weight:700; font-size:1.35rem; line-height:1.2;
+  color:#103E47; margin:2.2rem 0 1.1rem;
+}
+.card-mdq{
+  background:#fff; border:1px solid var(--c-line);
+  border-radius:16px; padding:1.1rem;
+  box-shadow: var(--shadow-2);
+  transition: transform .2s, box-shadow .2s;
+}
+.card-mdq:hover{ transform: translateY(-2px); box-shadow: var(--shadow-3); }
+.card-mdq__img{
+  border-radius:12px; margin-bottom:.8rem; opacity:.95;
+  width:100%; height:auto; display:block;
+}
+.card-mdq__title{
+  margin:.15rem 0 .45rem; font-weight:700;
+  font-size:1.02rem; line-height:1.3; color:#0F3D46;
+}
+.card-mdq__text{ margin:0; color:var(--c-muted); }
+.card-mdq__actions{ margin-top:.8rem; }
+
+/* =========================================================
+   CALLOUT
+   ========================================================= */
+.callout-mdq{
+  background: linear-gradient(180deg,#F7FCFD 0%,#FFFFFF 100%);
+  border:1px solid var(--c-line);
+  border-radius:18px;
+  margin-top:2.6rem;
+}
+.callout-mdq__inner{
+  padding:1.2rem; display:flex; align-items:center; justify-content:space-between; gap:1rem;
+}
+.callout-mdq__inner p{ margin:0; color:#0E3F49; font-weight:600; }
+
+/* =========================================================
+   SWIPER (ajustes mínimos)
+   ========================================================= */
+.swiper-pagination{ transform: translateY(6px); }
+
+/* =========================================================
+   REVEAL (no ocultar sin JS)
+   ========================================================= */
+.reveal{ opacity:1; transform:none; }               /* visible por defecto */
+.js .reveal{
+  opacity:0; transform:translateY(10px);
+  transition: opacity .5s, transform .5s;
+}
+.js .reveal.is-in{ opacity:1; transform:none; }
+
+/* =========================================================
+   BLOQUE CONTACTO
+   ========================================================= */
+.contact-gradient{
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(20,60,80,.5), transparent),
+    radial-gradient(800px 400px at 100% 0%, rgba(30,80,100,.5), transparent),
+    linear-gradient(180deg, rgba(30,40,46,.85), rgba(30,40,46,.85));
+  color:#fff;
+}
+.contact-gradient .form-label{ color:#fff; opacity:.9; }
+.contact-gradient .form-control,
+.contact-gradient .form-select,
+.contact-gradient textarea{
+  background:#fff; color:#212529;
+}
+
+/* =========================================================
+   BOTÓN FLOTANTE WHATSAPP
+   ========================================================= */
+.floating-contact{
+  position: fixed; right: 18px; bottom: 18px;
+  display:inline-flex; align-items:center; text-decoration:none;
+  z-index:1050;
+}
+.floating-contact .pill{
+  background:#fff; color:#198754; border-radius:999px;
+  padding:6px 12px; margin-right:8px;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+  font-weight:600; border:1px solid rgba(0,0,0,.06);
+}
+.floating-contact .bubble{
+  display:inline-flex; align-items:center; justify-content:center;
+  background:#25D366; color:#fff; width:44px; height:44px;
+  border-radius:999px; box-shadow:0 6px 16px rgba(0,0,0,.2);
+}
+.floating-contact:hover .bubble{ transform: translateY(-1px); }
+.floating-contact .bubble, .floating-contact .pill{
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+@media (max-width:480px){ .floating-contact .pill{ display:none; } }
+
+/* =========================================================
+   FOOTER ELEGANTE
+   ========================================================= */
+.footer-mdq{
+  border-top:1px solid var(--c-line);
+  margin-top:2.5rem;
+  background:#fff;
+}
+.footer-mdq__grid{
+  display:grid;
+  grid-template-columns: 1.2fr .8fr .8fr;
+  gap:1.4rem;
+  padding:1.6rem 0;
+}
+@media (max-width: 900px){
+  .footer-mdq__grid{ grid-template-columns: 1fr; padding:1.2rem 0; }
+}
+.footer-mdq__title{
+  margin:0 0 .4rem; font:800 1rem/1 'Manrope', sans-serif; color:#103E47;
+}
+.footer-mdq__subtitle{
+  margin:0 0 .4rem; font:700 .95rem/1.2 'Manrope', sans-serif; color:#0F3D46;
+}
+.footer-mdq__desc{ margin:.2rem 0 .8rem; color:var(--c-muted); }
+.footer-mdq__hint{ margin-top:.6rem; color:var(--c-muted); font-size:.85rem; list-style:none; }
+.footer-mdq__list{ margin:0; padding:0; list-style:none; display:grid; gap:.45rem; }
+.footer-mdq__links{ margin:0; padding:0; list-style:none; display:grid; gap:.35rem; }
+.footer-mdq__label{ font-weight:600; color:#0E3F49; }
+.footer-mdq__link{ color:var(--c-muted); text-decoration:none; transition:color .2s ease; }
+.footer-mdq__link:hover{ color:var(--c-primary); }
+.footer-mdq__bottom{
+  border-top:1px solid var(--c-line);
+  padding:.9rem 0; display:flex; flex-wrap:wrap;
+  align-items:center; justify-content:space-between; gap:.75rem;
+  color:var(--c-muted); font-size:.9rem;
+}
+.footer-mdq__copy{ margin:0; }
+.footer-mdq__up{
+  text-decoration:none; color:#0E3F49;
+  background: var(--c-primary-50);
+  border:1px solid var(--c-line);
+  border-radius: 999px;
+  padding:.45rem .8rem;
+}
+.footer-mdq__up:hover{ background:#E7F6F9; }
+
+/* =========================================================
+   RESPONSIVE AJUSTES SUAVES
+   ========================================================= */
+@media (max-width:900px){
+  .hero-mdq__inner{ margin-inline: 1.25rem; }
+}
+
+/* =========================================================
+   SERVICIOS — Intro, Chips y Acordeón (estilo MDQ)
+   ========================================================= */
+.page-intro-mdq{
+  background: rgba(255,255,255,.62);
+  backdrop-filter: blur(10px) saturate(140%);
+  border: 1px solid var(--c-line);
+  border-radius: 18px;
+  padding: 1.15rem 1.2rem;
+  box-shadow: var(--shadow-2);
+  margin: 1rem 0 1.25rem;
+}
+.page-intro-mdq__eyebrow{
+  margin: 0 0 .2rem;
+  font: 700 .8rem/1 Manrope, system-ui, sans-serif;
+  color: var(--c-primary-700);
+  letter-spacing: .3px; text-transform: uppercase;
+}
+.page-intro-mdq__title{
+  margin: 0 0 .35rem;
+  font: 800 clamp(1.3rem, 2.4vw, 1.8rem)/1.1 Manrope, system-ui, sans-serif;
+  color: #0E3F49;
+}
+.page-intro-mdq__lead{ margin: 0; color: var(--c-muted); }
+
+/* Chips */
+.chips-mdq{ display:flex; flex-wrap:wrap; gap:.5rem; margin:.4rem 0 1.1rem; }
+.chip-mdq{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding: .45rem .7rem;
+  border:1px solid var(--c-line); border-radius:999px; text-decoration:none;
+  font-weight:600; font-size:.92rem; color:#0B3A43; background:var(--c-primary-50);
+  transition: background .15s ease, transform .06s ease;
+}
+.chip-mdq:hover{ background:#E7F6F9; }
+.chip-mdq:active{ transform: translateY(1px); }
+
+/* Acordeón */
+.acc-mdq{ display:grid; gap:.8rem; }
+.acc-mdq__item{
+  border: 1px solid var(--c-line); border-radius:16px; background:#fff;
+  box-shadow: var(--shadow-1); overflow: clip;
+}
+.acc-mdq__header{ margin:0; }
+.acc-mdq__trigger{
+  width:100%; appearance:none; background:linear-gradient(180deg,#FFFFFF 0%, #F9FCFD 100%);
+  border:0; display:grid; grid-template-columns:1fr auto; align-items:center; gap:.75rem;
+  padding:.95rem 1rem; cursor:pointer; text-align:left;
+}
+.acc-mdq__title{ font:800 1rem/1.15 Manrope, system-ui, sans-serif; color:#0E3F49; }
+.acc-mdq__chev{
+  width:22px; height:22px; border-radius:999px; border:1px solid var(--c-line);
+  display:grid; place-items:center; position:relative;
+}
+.acc-mdq__chev::before{
+  content:""; width:8px; height:8px; border-bottom:2px solid #0E3F49; border-right:2px solid #0E3F49;
+  transform: rotate(45deg); transition: transform .18s ease; position:absolute;
+}
+.acc-mdq__item.is-open .acc-mdq__chev::before{ transform: rotate(-135deg); }
+.acc-mdq__panel{ --_max:0; max-height: var(--_max); transition:max-height .22s ease; }
+.acc-mdq__item.is-open .acc-mdq__panel{ --_max: 1000px; }
+.acc-mdq__body{ padding:.6rem .95rem .95rem; background:#fff; }
+.acc-mdq__excerpt{ margin:.1rem 0 .6rem; color:var(--c-muted); }
+.acc-mdq__p{ margin:0 0 .65rem; color:var(--c-text); }
+.acc-mdq__actions{ display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.8rem; }
