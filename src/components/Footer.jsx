@@ -1,8 +1,15 @@
 // src/components/Footer.jsx
 import { Link } from "react-router-dom";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Footer() {
   const year = new Date().getFullYear();
+
+  // Datos de contacto (1 sola fuente de verdad)
+  const EMAIL = "drgianuzzi@gmail.com";
+  const PHONE_E164 = "+5492234421528";
+  const PHONE_HUMAN = "+54 9 223 442-1528";
+  const WHATS_E164 = "5492234421528";
 
   return (
     <footer className="footer-mdq" role="contentinfo">
@@ -16,21 +23,24 @@ export default function Footer() {
           <ul className="footer-mdq__list">
             <li>
               <span className="footer-mdq__label">Email:</span>{" "}
-              <a href="mailto:info@discapacidadmdq.com.ar" className="footer-mdq__link">
-                drgianuzzi@gmail.com
+              <a href={`mailto:${EMAIL}`} className="footer-mdq__link">
+                {EMAIL}
               </a>
             </li>
             <li>
               <span className="footer-mdq__label">Teléfono:</span>{" "}
-              <a href="tel:+54223XXXXXXXX" className="footer-mdq__link">+54 9 223 442-1528</a>
+              <a href={`tel:${PHONE_E164}`} className="footer-mdq__link">
+                {PHONE_HUMAN}
+              </a>
             </li>
             <li>
               <span className="footer-mdq__label">WhatsApp:</span>{" "}
               <a
-                href="https://wa.me/54223XXXXXXXX"
+                href={`https://wa.me/${WHATS_E164}`}
                 target="_blank"
                 rel="noreferrer"
                 className="footer-mdq__link"
+                aria-label="Escribir por WhatsApp"
               >
                 Escribir por WhatsApp
               </a>
@@ -39,7 +49,9 @@ export default function Footer() {
               <span className="footer-mdq__label">Dirección:</span>{" "}
               <span>Mar del Plata</span>
             </li>
-            <li className="footer-mdq__hint">Horarios de atención: Lun–Vie 9 a 14 h</li>
+            <li className="footer-mdq__hint">
+              Horarios de atención: Lun–Vie 9 a 14 h
+            </li>
           </ul>
         </section>
 
@@ -48,8 +60,8 @@ export default function Footer() {
           <h2 id="ft-sec" className="footer-mdq__subtitle">Secciones</h2>
           <ul className="footer-mdq__links">
             <li><Link className="footer-mdq__link" to="/">Inicio</Link></li>
-            <li><Link className="footer-mdq__link" to="/quienes-somos">Quiénes somos</Link></li>
             <li><Link className="footer-mdq__link" to="/servicios">Servicios</Link></li>
+            <li><Link className="footer-mdq__link" to="/quienes-somos">Quiénes somos</Link></li>
             <li><Link className="footer-mdq__link" to="/como-actuar">Cómo actuar</Link></li>
             <li><Link className="footer-mdq__link" to="/contacto">Contacto</Link></li>
           </ul>
@@ -67,9 +79,21 @@ export default function Footer() {
         </nav>
       </div>
 
+      {/* Línea inferior */}
       <div className="container footer-mdq__bottom">
         <p className="footer-mdq__copy">© {year} Discapacidad MDQ. Todos los derechos reservados.</p>
-        <a href="#top" className="footer-mdq__up" aria-label="Volver arriba">Volver arriba</a>
+
+        {/* Selector de tema (versión compacta) */}
+        <div className="d-flex align-items-center gap-3 flex-wrap">
+          <ThemeToggle compact />
+          <a
+            href="#contenido"
+            className="footer-mdq__up"
+            aria-label="Volver al contenido principal"
+          >
+            Volver arriba
+          </a>
+        </div>
       </div>
     </footer>
   );

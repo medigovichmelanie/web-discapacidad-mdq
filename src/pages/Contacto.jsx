@@ -9,7 +9,7 @@ export default function Contacto() {
     telefono: "",
     reclamo: "",
     mensaje: "",
-    website: "" // honeypot (debe quedar vacío)
+    website: "" // honeypot
   });
 
   const [errors, setErrors] = useState({});
@@ -40,8 +40,7 @@ export default function Contacto() {
     e.preventDefault();
     if (!validate()) return;
 
-    // Construye un mailto (sin backend)
-    const destinatario = "info@discapacidadmdq.com.ar"; // <-- reemplazar si cambia
+    const destinatario = "info@discapacidadmdq.com.ar";
     const asunto = encodeURIComponent(`Consulta — ${labelDe(form.reclamo)} — ${form.nombre}`);
     const cuerpo = encodeURIComponent(
       [
@@ -51,7 +50,7 @@ export default function Contacto() {
         `Tema: ${labelDe(form.reclamo)}`,
         "",
         "Mensaje:",
-        form.mensaje
+        form.mensaje,
       ].join("\n")
     );
 
@@ -60,16 +59,21 @@ export default function Contacto() {
 
   return (
     <section className="container">
-      {/* Encabezado unificado */}
-      <header className="mb-5 text-center">
-        <h1 className="section-title-mdq">Tu caso</h1>
-        <p className="lead text-muted">Completá el formulario y nos pondremos en contacto.</p>
+      {/* Intro unificada */}
+      <header className="page-intro-mdq reveal" aria-labelledby="contacto-title">
+        <div>
+          <p className="page-intro-mdq__eyebrow">Consulta rápida</p>
+          <h1 id="contacto-title" className="page-intro-mdq__title">Tu caso</h1>
+          <p className="page-intro-mdq__lead">
+            Completá el formulario y nos pondremos en contacto a la brevedad.
+          </p>
+        </div>
       </header>
 
-      {/* Card unificada */}
-      <article className="card-mdq">
+      {/* Card con formulario */}
+      <article className="card-mdq reveal">
         <div className="card-mdq__body">
-          {/* honeypot (oculto para humanos) */}
+          {/* honeypot oculto */}
           <div style={{ position: "absolute", left: "-10000px" }} aria-hidden="true">
             <label htmlFor="website">No completar este campo</label>
             <input id="website" name="website" value={form.website} onChange={onChange} />
@@ -135,7 +139,9 @@ export default function Contacto() {
                   aria-describedby={errors.reclamo ? "err-reclamo" : undefined}
                 >
                   {opcionesReclamo.map((opt) => (
-                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
                   ))}
                 </select>
                 {errors.reclamo && <div id="err-reclamo" className="invalid-feedback">{errors.reclamo}</div>}
@@ -158,8 +164,10 @@ export default function Contacto() {
             </div>
 
             {/* Botón */}
-            <div className="mt-4">
-              <button type="submit" className="btn-mdq btn-mdq--primary btn-mdq--lg">Enviar</button>
+            <div className="mt-4 text-center">
+              <button type="submit" className="btn-mdq btn-mdq--primary btn-mdq--lg">
+                Enviar
+              </button>
               {errors.global && <div className="text-danger mt-3">{errors.global}</div>}
             </div>
           </form>

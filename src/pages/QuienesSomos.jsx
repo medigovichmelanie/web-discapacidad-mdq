@@ -4,13 +4,16 @@ import { Link } from "react-router-dom";
 export default function QuienesSomos() {
   return (
     <section className="container">
-      {/* Encabezado */}
-      <header className="mb-5 text-center">
-        <h1 className="section-title-mdq">Quiénes somos</h1>
-        <p className="lead text-muted mb-0">
-          Abogados especializados en derecho a la salud y en la protección de los derechos
-          de las personas con discapacidad en Mar del Plata.
-        </p>
+      {/* INTRO (vidrio) */}
+      <header className="page-intro-mdq reveal" aria-labelledby="qs-title">
+        <div>
+          <p className="page-intro-mdq__eyebrow">Nuestro estudio</p>
+          <h1 id="qs-title" className="page-intro-mdq__title">Quiénes somos</h1>
+          <p className="page-intro-mdq__lead">
+            Abogados especializados en derecho a la salud y en la protección de los derechos
+            de las personas con discapacidad en Mar del Plata.
+          </p>
+        </div>
       </header>
 
       <div className="row g-4">
@@ -39,7 +42,7 @@ export default function QuienesSomos() {
         </div>
 
         {/* Lateral */}
-        <aside className="col-lg-4">
+        <aside className="col-lg-4" aria-label="Motivos para elegirnos">
           <div className="card-mdq h-100">
             <div className="card-mdq__body">
               <h3 className="card-mdq__title">Por qué elegirnos</h3>
@@ -59,14 +62,14 @@ export default function QuienesSomos() {
       </div>
 
       {/* Callout final */}
-      <div className="callout-mdq mt-5 text-center">
+      <section className="callout-mdq reveal mt-5 text-center" role="complementary" aria-label="Ayuda inmediata">
         <div className="callout-mdq__inner">
           <p className="fs-5 mb-3">¿Necesitás ayuda con una cobertura o un tratamiento?</p>
           <Link to="/como-actuar" className="btn-mdq btn-mdq--primary btn-mdq--lg">
             Ver cómo actuar
           </Link>
         </div>
-      </div>
+      </section>
     </section>
   );
 }

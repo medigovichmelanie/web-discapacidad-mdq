@@ -23,24 +23,29 @@ export default function Servicios() {
 
   return (
     <section className="container">
-      {/* Banda de introducción (vidrio suave) */}
+      {/* Intro (vidrio) */}
       <header className="page-intro-mdq reveal" aria-labelledby="srv-title">
         <div>
-          <h1 id="srv-title" className="page-intro-mdq__title">Servicios</h1>
+          <p className="page-intro-mdq__eyebrow">Áreas frecuentes</p>
+          <h1 id="srv-title" className="page-intro-mdq__title">
+            Servicios
+          </h1>
           <p className="page-intro-mdq__lead">
             Abrí cada tema para ver el detalle. También podés ir directo desde el inicio.
           </p>
         </div>
       </header>
 
-      {/* Chips de acceso rápido a cada servicio */}
+      {/* Chips de acceso rápido */}
       <nav className="chips-mdq" aria-label="Accesos rápidos">
-        {servicios.map(s => (
-          <a key={s.id} href={`#${s.id}`} className="chip-mdq">{s.titulo}</a>
+        {servicios.map((s) => (
+          <a key={s.id} href={`#${s.id}`} className="chip-mdq">
+            {s.titulo}
+          </a>
         ))}
       </nav>
 
-      {/* Acordeón MDQ */}
+      {/* Acordeón */}
       <div className="acc-mdq" id="accordionServicios">
         {servicios.map((s) => {
           const isOpen = abierto === s.id;
@@ -50,7 +55,11 @@ export default function Servicios() {
               key={s.id}
               id={`item-${s.id}`}
             >
-              <h2 className="acc-mdq__header" id={`heading-${s.id}`}>
+              <h2
+                className="acc-mdq__header"
+                id={`heading-${s.id}`}
+                style={{ scrollMarginTop: "76px" }} // compensa navbar sticky
+              >
                 <button
                   className="acc-mdq__trigger"
                   type="button"
@@ -70,13 +79,22 @@ export default function Servicios() {
                 aria-labelledby={`heading-${s.id}`}
               >
                 <div className="acc-mdq__body">
-                  <p className="acc-mdq__excerpt">{s.extracto}</p>
-                  {s.contenido.map((p, i) => (
-                    <p key={i} className="acc-mdq__p">{p}</p>
-                  ))}
+                  {s.extracto && (
+                    <p className="acc-mdq__excerpt">{s.extracto}</p>
+                  )}
+
+                  {Array.isArray(s.contenido) &&
+                    s.contenido.map((p, i) => (
+                      <p key={i} className="acc-mdq__p">
+                        {p}
+                      </p>
+                    ))}
 
                   <div className="acc-mdq__actions">
-                    <Link to="/contacto" className="btn-mdq btn-mdq--primary btn-mdq--sm">
+                    <Link
+                      to="/contacto"
+                      className="btn-mdq btn-mdq--primary btn-mdq--sm"
+                    >
                       Consultar este tema
                     </Link>
                     <a className="btn-mdq btn-mdq--soft btn-mdq--sm" href="#top">

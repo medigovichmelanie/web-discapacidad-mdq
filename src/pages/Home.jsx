@@ -6,7 +6,6 @@ import { Navigation, Pagination } from "swiper/modules";
 import Hero from "../components/Hero";
 
 export default function Home() {
-
   // 🔗 Links Cloudinary (usa tus URLs completas)
   const HERO_URL =
     "https://res.cloudinary.com/du0bcauzw/image/upload/v1760199821/hero-abstracto-teal_muz6v2.webp";
@@ -26,16 +25,56 @@ export default function Home() {
     "https://res.cloudinary.com/du0bcauzw/image/upload/v1759077682/ChatGPT_Image_28_sept_2025_18_40_59_ubhue2.png";
 
   const temasHome = [
-    { titulo: "Residencia geriátrica", texto: "Cobertura del 100% del geriátrico cuando corresponde.", to: "/servicios#geriatrica", img: CARD_URL_1 },
-    { titulo: "Seguir en tu obra social al jubilarte", texto: "El pase a PAMI no es obligatorio, podés mantener tu cobertura.", to: "/servicios#obra-social-jubilacion", img: CARD_URL_2 },
-    { titulo: "Prótesis y órtesis", texto: "Cobertura de prótesis indicadas por tu médico, incluso importadas si no hay equivalente.", to: "/servicios#protesis-ortesis", img: CARD_URL_3 },
-    { titulo: "Tratamiento o medicación denegada", texto: "Aunque no figure en el PMO, puede corresponder según indicación médica.", to: "/servicios#tratamiento-negado", img: CARD_URL_4 || CARD_URL_1 },
-    { titulo: "Cobertura parcial de medicación", texto: "Muchas veces cubren menos porcentaje del debido. Conozca lo que corresponde.", to: "/servicios#medicacion-parcial", img: CARD_URL_5 },
-    { titulo: "Preexistencias y afiliación", texto: "No pueden rechazarte ni fijar cuotas extraordinarias por enfermedades preexistentes.", to: "/servicios#preexistencias", img: CARD_URL_6 },
-    { titulo: "Tratamientos particulares", texto: "Bariátrica, oncológicos y fertilidad: requisitos y cobertura integral cuando aplica.", to: "/servicios#tratamientos-particulares", img: CARD_URL_7 },
+    {
+      titulo: "Residencia geriátrica",
+      texto: "Cobertura del 100% del geriátrico cuando corresponde.",
+      to: "/servicios#geriatrica",
+      img: CARD_URL_1,
+    },
+    {
+      titulo: "Seguir en tu obra social al jubilarte",
+      texto: "El pase a PAMI no es obligatorio, podés mantener tu cobertura.",
+      to: "/servicios#obra-social-jubilacion",
+      img: CARD_URL_2,
+    },
+    {
+      titulo: "Prótesis y órtesis",
+      texto:
+        "Cobertura de prótesis indicadas por tu médico, incluso importadas si no hay equivalente.",
+      to: "/servicios#protesis-ortesis",
+      img: CARD_URL_3,
+    },
+    {
+      titulo: "Tratamiento o medicación denegada",
+      texto:
+        "Aunque no figure en el PMO, puede corresponder según indicación médica.",
+      to: "/servicios#tratamiento-negado",
+      img: CARD_URL_4,
+    },
+    {
+      titulo: "Cobertura parcial de medicación",
+      texto:
+        "Muchas veces cubren menos porcentaje del debido. Conozca lo que corresponde.",
+      to: "/servicios#medicacion-parcial",
+      img: CARD_URL_5,
+    },
+    {
+      titulo: "Preexistencias y afiliación",
+      texto:
+        "No pueden rechazarte ni fijar cuotas extraordinarias por enfermedades preexistentes.",
+      to: "/servicios#preexistencias",
+      img: CARD_URL_6,
+    },
+    {
+      titulo: "Tratamientos particulares",
+      texto:
+        "Bariátrica, oncológicos y fertilidad: requisitos y cobertura integral cuando aplica.",
+      to: "/servicios#tratamientos-particulares",
+      img: CARD_URL_7,
+    },
   ];
 
-  // Micro reveal
+  // Micro reveal (animación suave al entrar en viewport)
   useEffect(() => {
     const els = document.querySelectorAll(".reveal");
     const obs = new IntersectionObserver(
@@ -53,12 +92,6 @@ export default function Home() {
     return () => obs.disconnect();
   }, []);
 
-  useEffect(() => {
-    document.body.classList.add('has-hero');
-    return () => document.body.classList.remove('has-hero');
-  }, []);
-
-
   return (
     <>
       <Hero
@@ -73,13 +106,19 @@ export default function Home() {
       />
 
       <section className="container" aria-labelledby="srv" aria-live="polite">
-        <h2 id="srv" className="section-title-mdq">¿En qué podemos ayudarte?</h2>
+        <h2 id="srv" className="section-title-mdq">
+          ¿En qué podemos ayudarte?
+        </h2>
 
         <Swiper
           modules={[Navigation, Pagination]}
           spaceBetween={16}
           slidesPerView={1.1}
-          breakpoints={{ 640: { slidesPerView: 2 }, 992: { slidesPerView: 3 }, 1200: { slidesPerView: 4 } }}
+          breakpoints={{
+            640: { slidesPerView: 2 },
+            992: { slidesPerView: 3 },
+            1200: { slidesPerView: 4 },
+          }}
           navigation
           pagination={{ clickable: true }}
           style={{ paddingBottom: "28px" }}
@@ -87,12 +126,27 @@ export default function Home() {
         >
           {temasHome.map((card, i) => (
             <SwiperSlide key={i} aria-roledescription="slide">
-              <article className="card-mdq">
-                <img className="card-mdq__img" src={card.img} alt={card.titulo} loading="lazy" decoding="async" width="640" height="420" />
-                <h3 className="card-mdq__title">{card.titulo}</h3>
-                <p className="card-mdq__text">{card.texto}</p>
-                <div className="card-mdq__actions">
-                  <Link to={card.to} className="btn-mdq btn-mdq--primary btn-mdq--sm">Leer más</Link>
+              <article className="card-mdq reveal h-100">
+                <img
+                  className="card-mdq__img"
+                  src={card.img}
+                  alt={card.titulo}
+                  loading="lazy"
+                  decoding="async"
+                  width="640"
+                  height="420"
+                />
+                <div className="card-mdq__body">
+                  <h3 className="card-mdq__title">{card.titulo}</h3>
+                  <p className="card-mdq__text">{card.texto}</p>
+                  <div className="card-mdq__actions">
+                    <Link
+                      to={card.to}
+                      className="btn-mdq btn-mdq--primary btn-mdq--sm"
+                    >
+                      Leer más
+                    </Link>
+                  </div>
                 </div>
               </article>
             </SwiperSlide>
@@ -101,10 +155,19 @@ export default function Home() {
       </section>
 
       <section className="container">
-        <div className="callout-mdq reveal" role="complementary" aria-label="Confianza">
+        <div
+          className="callout-mdq reveal"
+          role="complementary"
+          aria-label="Confianza"
+        >
           <div className="callout-mdq__inner">
-            <p><strong>25 años de trayectoria</strong> en derecho a la salud y amparos en Mar del Plata.</p>
-            <Link className="btn-mdq btn-mdq--primary" to="/contacto">Quiero mi consulta</Link>
+            <p className="fs-5 mb-3">
+              <strong>25 años de trayectoria</strong> en derecho a la salud y
+              amparos en Mar del Plata.
+            </p>
+            <Link className="btn-mdq btn-mdq--primary btn-mdq--lg" to="/contacto">
+              Quiero mi consulta
+            </Link>
           </div>
         </div>
       </section>

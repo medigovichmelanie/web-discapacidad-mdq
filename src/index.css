@@ -411,3 +411,201 @@ main.container { padding-top: 6rem; }
 .acc-mdq__excerpt{ margin:.1rem 0 .6rem; color:var(--c-muted); }
 .acc-mdq__p{ margin:0 0 .65rem; color:var(--c-text); }
 .acc-mdq__actions{ display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.8rem; }
+
+/* =========================================================
+   TIPOGRAFÍA CONSISTENTE + RITMO VERTICAL (global)
+   ========================================================= */
+
+:root{
+  /* escala fluida */
+  --fs-h1: clamp(2.0rem, 2.2rem + 0.8vw, 3.0rem);
+  --fs-h2: clamp(1.5rem, 1.4rem + 0.6vw, 2.0rem);
+  --fs-h3: clamp(1.2rem, 1.1rem + 0.4vw, 1.5rem);
+  --fs-lead: clamp(1.05rem, 1.0rem + 0.3vw, 1.25rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.925rem;
+
+  --lh-tight: 1.15;
+  --lh-normal: 1.55;
+  --lh-loose: 1.8;
+
+  /* ritmo vertical */
+  --space-1: .5rem;
+  --space-2: .75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+}
+
+/* Encabezados globales */
+h1,.h1 { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: var(--fs-h1); line-height: var(--lh-tight); margin: 0 0 var(--space-2); color:#0E3F49; }
+h2,.h2 { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: var(--fs-h2); line-height: 1.2; margin: var(--space-4) 0 var(--space-2); color:#103E47; }
+h3,.h3 { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: var(--fs-h3); line-height: 1.25; margin: var(--space-3) 0 var(--space-1); color:#103E47; }
+
+/* Texto base */
+p { font-size: var(--fs-body); line-height: var(--lh-normal); margin: 0 0 var(--space-3); color: var(--c-text); }
+.lead { font-size: var(--fs-lead) !important; line-height: var(--lh-loose); color: var(--c-muted); }
+
+/* Títulos de sección unificados */
+.section-title-mdq { font-size: var(--fs-h2); font-weight: 800; text-align:center; color:#103E47; margin: var(--space-5) 0 var(--space-3); }
+.section-subtitle-mdq { font-size: var(--fs-h3); font-weight: 700; color: var(--c-primary-700); margin: var(--space-2) 0 var(--space-2); }
+
+/* Separación vertical común para todas las páginas */
+section.container { padding-top: var(--space-5); padding-bottom: var(--space-5); }
+@media (max-width: 768px){
+  section.container { padding-top: var(--space-4); padding-bottom: var(--space-4); }
+}
+
+/* Listas */
+ul,ol { padding-left: 1.1rem; margin-bottom: var(--space-3); }
+li { margin-bottom: .35rem; }
+
+/* Ajustes finos de componentes ya usados */
+.card-mdq__title { font-size: 1.05rem; }
+.card-mdq__text { font-size: var(--fs-sm); }
+.callout-mdq p { font-size: var(--fs-body); }
+.btn-mdq { font-size: .98rem; }
+.btn-mdq--sm { font-size: .92rem; }
+.btn-mdq--lg { font-size: 1.05rem; }
+
+/* =========================================================
+   MICROINTERACCIONES & EFECTOS
+   ========================================================= */
+
+/* Transiciones suaves (solo si el usuario no pide reducir animaciones) */
+@media (prefers-reduced-motion: no-preference) {
+  .btn-mdq,
+  .card-mdq,
+  .floating-contact .bubble {
+    transition:
+      background-color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
+  }
+}
+
+/* Hover / focus accesibles para botones */
+.btn-mdq:hover,
+.btn-mdq:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+.btn-mdq:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-1);
+}
+
+/* Variantes específicas */
+.btn-mdq--primary:hover,
+.btn-mdq--primary:focus-visible {
+  background: var(--c-primary-700);
+}
+.btn-mdq--soft:hover,
+.btn-mdq--soft:focus-visible {
+  background: #eaf8fa;
+  border-color: var(--c-primary);
+}
+
+/* Hover / focus en cards */
+.card-mdq:hover,
+.card-mdq:focus-within {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-3);
+}
+
+/* Swiper: flechas visibles al pasar el mouse */
+.swiper-button-prev,
+.swiper-button-next {
+  color: var(--c-primary);
+  opacity: 0.65;
+  transition: opacity 0.2s ease;
+}
+.swiper:hover .swiper-button-prev,
+.swiper:hover .swiper-button-next {
+  opacity: 1;
+}
+
+/* =========================================================
+   BOTÓN WHATSAPP — “Pulse” sutil
+   ========================================================= */
+.floating-contact .bubble {
+  position: relative;
+}
+
+/* Halo animado alrededor del botón */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  70% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.floating-contact .bubble::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: rgba(37, 211, 102, 0.4);
+  animation: pulse-ring 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  z-index: -1;
+}
+
+/* El texto "Contactanos" también tiene leve entrada */
+@keyframes fade-in-pill {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.floating-contact .pill {
+  animation: fade-in-pill 0.6s ease both;
+}
+
+/* =========================================================
+   THEMES (paletas con data-theme en <body>)
+   ========================================================= */
+
+/* 1) Institucional (base sobria) */
+body[data-theme="institucional"] {
+  --c-primary: #006C84;
+  --c-primary-700: #055768;
+  --c-primary-50: #F1FBFD;
+  --c-text: #2B2B2B;
+  --c-muted: #616A6E;
+  --c-line: #E8F0F2;
+  /* opcional: fondo general */
+  --bg-page: #ffffff;
+}
+
+/* 2) Moderna (azul / índigo, vibrante) */
+body[data-theme="moderna"] {
+  --c-primary: #2563EB;       /* Indigo 600 */
+  --c-primary-700: #1D4ED8;   /* Indigo 700 */
+  --c-primary-50: #EEF2FF;    /* Indigo 50 */
+  --c-text: #1F2937;          /* Gray 800 */
+  --c-muted: #6B7280;         /* Gray 500 */
+  --c-line: #E5E7EB;          /* Gray 200 */
+  --bg-page: #ffffff;
+}
+
+/* 3) Cálida (ámbar / coral, cercano) */
+body[data-theme="calida"] {
+  --c-primary: #E8792E;       /* Orange 500 */
+  --c-primary-700: #C2410C;   /* Orange 700 */
+  --c-primary-50: #FFF7ED;    /* Orange 50 */
+  --c-text: #2C2A2A;          /* Warm gray */
+  --c-muted: #6B5F58;         /* Warm gray 500 */
+  --c-line: #F1E8E3;          /* Warm line */
+  --bg-page: #fffaf7;
+}
+
+/* Aplica fondo si lo definimos en el tema */
+body { background: var(--bg-page, #ffffff); }
+
